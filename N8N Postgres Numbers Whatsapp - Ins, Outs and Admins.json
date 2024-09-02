@@ -1,0 +1,1145 @@
+{
+  "name": "Postgres Numbers Whatsapp - Ins, Outs and Admins",
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "bdfacbc9-9980-4af5-8fb0-53bb958e7265",
+              "leftValue": "={{ $json.body.notification }}",
+              "rightValue": "GROUP_PARTICIPANT_INVITE",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "bc4fcac4-a35e-40db-bd4f-bf3dd2692de5",
+              "leftValue": "={{ $json.body.notification }}",
+              "rightValue": "GROUP_PARTICIPANT_ADD",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "8e8da458-fcd4-4970-b046-2f860d494d77",
+              "leftValue": "={{ $json.body.notification }}",
+              "rightValue": "GROUP_PARTICIPANT_LEAVE",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "id": "64c572f6-a10f-49e0-81d4-0c67b01f04e3",
+      "name": "Added, invited or left a group?",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        420,
+        880
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "0a075b27-2d9a-4293-a088-654db355903e",
+              "leftValue": "={{ $('Webhook Z-API').item.json.body.notification }}",
+              "rightValue": "GROUP_PARTICIPANT_ADD",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "e9beca54-71e5-40eb-9ac8-5b6ac8802267",
+              "leftValue": "={{ $('Webhook Z-API').item.json.body.notification }}",
+              "rightValue": "GROUP_PARTICIPANT_INVITE",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "id": "3455dff7-7cd7-4cca-a750-7dc26eca615e",
+      "name": "Added or invited?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        860,
+        880
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "f5ca06e4-1abc-4d9a-8b13-74de919f6ecc",
+              "leftValue": "={{ $json.celular }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "1d53b16b-02ac-4a18-9700-328b9964e3b8",
+              "leftValue": "={{ $json.data_in }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "3f946d86-ba6a-4f3c-b515-ba15c8178687",
+              "leftValue": "={{ $json.id_correspondente }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "46795e74-ac61-4b44-9f18-8248a09882dd",
+      "name": "Person found?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        1300,
+        1080
+      ]
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "numeros_whatsapp",
+          "mode": "list",
+          "cachedResultName": "numeros_whatsapp"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "eh_admin": false,
+            "data_in": "={{ new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' }).replace(',', '').trim().replace(/(\\d{2})\\/(\\d{2})\\/(\\d{4}) (\\d{2}:\\d{2}:\\d{2})/, '$3-$2-$1 $4') }}\n",
+            "celular": "={{ $('Webhook Z-API').item.json.body.notificationParameters[0] }}",
+            "data_out": "={{ new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' }).replace(',', '').trim().replace(/(\\d{2})\\/(\\d{2})\\/(\\d{4}) (\\d{2}:\\d{2}:\\d{2})/, '$3-$2-$1 $4') }}\n",
+            "id_correspondente": "={{ $('Grupos WPP Procurar Grupo (2)').item.json.id }}"
+          },
+          "matchingColumns": [
+            "unique_id"
+          ],
+          "schema": [
+            {
+              "id": "id_correspondente",
+              "displayName": "id_correspondente",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "celular",
+              "displayName": "celular",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "data_in",
+              "displayName": "data_in",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "data_out",
+              "displayName": "data_out",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "eh_admin",
+              "displayName": "eh_admin",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "7a8d9ea5-f464-4578-bdb7-ff714cb63084",
+      "name": "Nums WPP Insert (date_in and date_out)",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        1520,
+        1280
+      ],
+      "alwaysOutputData": false,
+      "credentials": {
+        "postgres": {
+          "id": "U8WnooCTi2OSArHP",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "numeros_whatsapp",
+          "mode": "list",
+          "cachedResultName": "numeros_whatsapp"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "eh_admin": false,
+            "data_in": "={{ new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' }).replace(',', '').trim().replace(/(\\d{2})\\/(\\d{2})\\/(\\d{4}) (\\d{2}:\\d{2}:\\d{2})/, '$3-$2-$1 $4') }}\n",
+            "celular": "={{ $('Webhook Z-API').item.json.body.notificationParameters[0] }}",
+            "id_correspondente": "={{ $('Grupos WPP Procurar Grupo (2)').item.json.id }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id_correspondente",
+              "displayName": "id_correspondente",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "celular",
+              "displayName": "celular",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "data_in",
+              "displayName": "data_in",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "data_out",
+              "displayName": "data_out",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "eh_admin",
+              "displayName": "eh_admin",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "d6cb94b8-081d-4fa1-b209-4edb9c77888e",
+      "name": "Nums WPP Insert (date_in)",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        1080,
+        880
+      ],
+      "alwaysOutputData": false,
+      "credentials": {
+        "postgres": {
+          "id": "U8WnooCTi2OSArHP",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "numeros_whatsapp",
+          "mode": "list",
+          "cachedResultName": "numeros_whatsapp"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "eh_admin": false,
+            "celular": "={{ $('Webhook Z-API').item.json.body.notificationParameters[0] }}",
+            "data_out": "={{ new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' }).replace(',', '').trim().replace(/(\\d{2})\\/(\\d{2})\\/(\\d{4}) (\\d{2}:\\d{2}:\\d{2})/, '$3-$2-$1 $4') }}\n",
+            "id_correspondente": "={{ $('Grupos WPP Procurar Grupo (2)').item.json.id }}",
+            "data_in": "={{ $json.data_in }}",
+            "id": "={{ $json.id }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id_correspondente",
+              "displayName": "id_correspondente",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "celular",
+              "displayName": "celular",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "data_in",
+              "displayName": "data_in",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "data_out",
+              "displayName": "data_out",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "eh_admin",
+              "displayName": "eh_admin",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "207a96a5-5391-4b45-8565-c4cb3613b339",
+      "name": "Nums WPP Update (date_out)",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        1520,
+        1080
+      ],
+      "alwaysOutputData": false,
+      "credentials": {
+        "postgres": {
+          "id": "U8WnooCTi2OSArHP",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "numeros_whatsapp",
+          "mode": "list",
+          "cachedResultName": "numeros_whatsapp"
+        },
+        "limit": "={{ 1 }}",
+        "where": {
+          "values": [
+            {
+              "column": "celular",
+              "value": "={{ $('Webhook Z-API').item.json.body.notificationParameters[0] }}"
+            },
+            {
+              "column": "data_out",
+              "condition": "IS NULL"
+            },
+            {
+              "column": "id_correspondente",
+              "value": "={{ $('Grupos WPP Procurar Grupo (2)').item.json.id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1ba1acd0-d07e-47f0-a738-aa531c907135",
+      "name": "Nums WPP Select (date_in)",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        1080,
+        1080
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "U8WnooCTi2OSArHP",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "a92efeee-4234-4934-9f75-866f6faa6f21",
+              "leftValue": "={{ $json.body.notification }}",
+              "rightValue": "GROUP_PARTICIPANT_PROMOTE",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "a02e8fbd-229b-451d-8653-a99f65c81830",
+              "leftValue": "={{ $json.body.notification }}",
+              "rightValue": "GROUP_PARTICIPANT_DEMOTE",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "id": "7e2a593d-5b0e-439e-a364-ba2663399515",
+      "name": "Admin promotion or demotion?",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        420,
+        520
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "0a075b27-2d9a-4293-a088-654db355903e",
+              "leftValue": "={{ $('Webhook Z-API').item.json.body.notification }}",
+              "rightValue": "GROUP_PARTICIPANT_PROMOTE",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "id": "53b1538b-6e6a-440b-a38d-9bc196fee99d",
+      "name": "Person promoted to Admin?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        1300,
+        520
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "34aa5331-fd9e-4d21-8c4a-724c1e1bce1c",
+        "options": {}
+      },
+      "id": "19b84b8f-f813-4a19-ba11-9bf74869c528",
+      "name": "Webhook Z-API",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        200,
+        520
+      ],
+      "webhookId": "34aa5331-fd9e-4d21-8c4a-724c1e1bce1c"
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "grupos_whatsapp",
+          "mode": "list",
+          "cachedResultName": "grupos_whatsapp"
+        },
+        "limit": 1,
+        "where": {
+          "values": [
+            {
+              "column": "id_grupo",
+              "value": "={{ $json.body.phone }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c30c20bf-7773-4ee2-9d1f-77c81d2c5062",
+      "name": "Grupos WPP Select Group by ID (2)",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        640,
+        880
+      ],
+      "alwaysOutputData": false,
+      "credentials": {
+        "postgres": {
+          "id": "U8WnooCTi2OSArHP",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "grupos_whatsapp",
+          "mode": "list",
+          "cachedResultName": "grupos_whatsapp"
+        },
+        "limit": 1,
+        "where": {
+          "values": [
+            {
+              "column": "id_grupo",
+              "value": "={{ $json.body.phone }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "7f2d4191-93aa-48f3-b51f-69df382874ff",
+      "name": "Groups WPP Select Group by ID (2)",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        640,
+        520
+      ],
+      "alwaysOutputData": false,
+      "credentials": {
+        "postgres": {
+          "id": "U8WnooCTi2OSArHP",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "numeros_whatsapp",
+          "mode": "list",
+          "cachedResultName": "numeros_whatsapp"
+        },
+        "returnAll": true,
+        "where": {
+          "values": [
+            {
+              "column": "celular",
+              "value": "={{ $('Webhook Z-API').item.json.body.notificationParameters[0] }}"
+            },
+            {
+              "column": "id_correspondente",
+              "value": "={{ $('Grupos WPP Procurar Grupo').item.json.id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6ab3b61d-4fbc-402d-b671-76ddc89b12f1",
+      "name": "Nums WPP Select rows by phone number",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        860,
+        520
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "U8WnooCTi2OSArHP",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "ea341e85-b99b-4ace-aeef-7598158390a3",
+              "leftValue": "={{ $json.celular }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "863763d1-48a9-4c7d-b520-d3cc7d289f84",
+              "leftValue": "={{ $json.id_correspondente }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "9a4cef5c-0bc9-4a33-8aeb-8d62baad0181",
+      "name": "Found rows?",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        1080,
+        520
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "numeros_whatsapp",
+          "mode": "list",
+          "cachedResultName": "numeros_whatsapp"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "eh_admin": true,
+            "celular": "={{ $('Webhook Z-API').item.json.body.notificationParameters[0] }}",
+            "id_correspondente": "={{ $('Grupos WPP Procurar Grupo').item.json.id }}"
+          },
+          "matchingColumns": [
+            "celular",
+            "id_correspondente"
+          ],
+          "schema": [
+            {
+              "id": "id_correspondente",
+              "displayName": "id_correspondente",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "celular",
+              "displayName": "celular",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "data_in",
+              "displayName": "data_in",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "data_out",
+              "displayName": "data_out",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "eh_admin",
+              "displayName": "eh_admin",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "7174f364-d763-4959-a516-49e6361cdba3",
+      "name": "Nums WPP Update (is_admin = True)",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        1520,
+        320
+      ],
+      "alwaysOutputData": false,
+      "credentials": {
+        "postgres": {
+          "id": "U8WnooCTi2OSArHP",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "numeros_whatsapp",
+          "mode": "list",
+          "cachedResultName": "numeros_whatsapp"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "eh_admin": false,
+            "celular": "={{ $('Webhook Z-API').item.json.body.notificationParameters[0] }}",
+            "id_correspondente": "={{ $('Grupos WPP Procurar Grupo').item.json.id }}"
+          },
+          "matchingColumns": [
+            "celular",
+            "id_correspondente"
+          ],
+          "schema": [
+            {
+              "id": "id_correspondente",
+              "displayName": "id_correspondente",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "celular",
+              "displayName": "celular",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "data_in",
+              "displayName": "data_in",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "data_out",
+              "displayName": "data_out",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "eh_admin",
+              "displayName": "eh_admin",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "f8cd5809-7592-4157-bf62-b2bded92a282",
+      "name": "Nums WPP Update (is_admin = False)",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        1520,
+        520
+      ],
+      "alwaysOutputData": false,
+      "credentials": {
+        "postgres": {
+          "id": "U8WnooCTi2OSArHP",
+          "name": "Postgres account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Adicionada, convidada ou saiu do grupo?": {
+      "main": [
+        [
+          {
+            "node": "Grupos WPP Procurar Grupo (2)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Foi adicionada ou convidada?": {
+      "main": [
+        [
+          {
+            "node": "Nums WPP Insert (data_in)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Nums WPP Procurar (data_in)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Encontrou a pessoa?": {
+      "main": [
+        [
+          {
+            "node": "Nums WPP Update (data_out)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Nums WPP Insert (data_in e data_out)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nums WPP Procurar (data_in)": {
+      "main": [
+        [
+          {
+            "node": "Encontrou a pessoa?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Virou Admin?": {
+      "main": [
+        [
+          {
+            "node": "Nums WPP Update (eh_admin = True)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Nums WPP Update (eh_admin = False)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Foi atualização de status de Admin?": {
+      "main": [
+        [
+          {
+            "node": "Grupos WPP Procurar Grupo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook Z-API": {
+      "main": [
+        [
+          {
+            "node": "Adicionada, convidada ou saiu do grupo?",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Foi atualização de status de Admin?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Grupos WPP Procurar Grupo (2)": {
+      "main": [
+        [
+          {
+            "node": "Foi adicionada ou convidada?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Grupos WPP Procurar Grupo": {
+      "main": [
+        [
+          {
+            "node": "Nums WPP Procurar Registros da Pessoa",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nums WPP Procurar Registros da Pessoa": {
+      "main": [
+        [
+          {
+            "node": "Encontrou Registros da Pessoa?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Encontrou Registros da Pessoa?": {
+      "main": [
+        [
+          {
+            "node": "Virou Admin?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "6d018560-97ec-4d79-8344-c470ae94bf41",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a9aaa4b061baa8497826cdb029f66eb21effee81f980f66947bc7a3d2fa5d303"
+  },
+  "id": "jFbM8LCYQRebRprQ",
+  "tags": []
+}
