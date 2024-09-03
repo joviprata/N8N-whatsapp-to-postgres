@@ -170,7 +170,7 @@
             "data_in": "={{ new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' }).replace(',', '').trim().replace(/(\\d{2})\\/(\\d{2})\\/(\\d{4}) (\\d{2}:\\d{2}:\\d{2})/, '$3-$2-$1 $4') }}\n",
             "celular": "={{ $('Webhook Z-API').item.json.body.notificationParameters[0] }}",
             "data_out": "={{ new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' }).replace(',', '').trim().replace(/(\\d{2})\\/(\\d{2})\\/(\\d{4}) (\\d{2}:\\d{2}:\\d{2})/, '$3-$2-$1 $4') }}\n",
-            "id_correspondente": "={{ $('Grupos WPP Procurar Grupo (2)').item.json.id }}"
+            "id_correspondente": "={{ $('Groups WPP Select Group by ID (2)').item.json.id }}"
           },
           "matchingColumns": [
             "unique_id"
@@ -271,7 +271,7 @@
             "eh_admin": false,
             "data_in": "={{ new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' }).replace(',', '').trim().replace(/(\\d{2})\\/(\\d{2})\\/(\\d{4}) (\\d{2}:\\d{2}:\\d{2})/, '$3-$2-$1 $4') }}\n",
             "celular": "={{ $('Webhook Z-API').item.json.body.notificationParameters[0] }}",
-            "id_correspondente": "={{ $('Grupos WPP Procurar Grupo (2)').item.json.id }}"
+            "id_correspondente": "={{ $('Groups WPP Select Group by ID (2)').item.json.id }}"
           },
           "matchingColumns": [
             "id"
@@ -373,7 +373,7 @@
             "eh_admin": false,
             "celular": "={{ $('Webhook Z-API').item.json.body.notificationParameters[0] }}",
             "data_out": "={{ new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' }).replace(',', '').trim().replace(/(\\d{2})\\/(\\d{2})\\/(\\d{4}) (\\d{2}:\\d{2}:\\d{2})/, '$3-$2-$1 $4') }}\n",
-            "id_correspondente": "={{ $('Grupos WPP Procurar Grupo (2)').item.json.id }}",
+            "id_correspondente": "={{ $('Groups WPP Select Group by ID (2)').item.json.id }}",
             "data_in": "={{ $json.data_in }}",
             "id": "={{ $json.id }}"
           },
@@ -486,7 +486,7 @@
             },
             {
               "column": "id_correspondente",
-              "value": "={{ $('Grupos WPP Procurar Grupo (2)').item.json.id }}"
+              "value": "={{ $('Groups WPP Select Group by ID (2)').item.json.id }}"
             }
           ]
         },
@@ -705,7 +705,7 @@
             },
             {
               "column": "id_correspondente",
-              "value": "={{ $('Grupos WPP Procurar Grupo').item.json.id }}"
+              "value": "={{ $('Groups WPP Select Group by ID').item.json.id }}"
             }
           ]
         },
@@ -789,7 +789,7 @@
           "value": {
             "eh_admin": true,
             "celular": "={{ $('Webhook Z-API').item.json.body.notificationParameters[0] }}",
-            "id_correspondente": "={{ $('Grupos WPP Procurar Grupo').item.json.id }}"
+            "id_correspondente": "={{ $('Groups WPP Select Group by ID').item.json.id }}"
           },
           "matchingColumns": [
             "celular",
@@ -894,7 +894,7 @@
           "value": {
             "eh_admin": false,
             "celular": "={{ $('Webhook Z-API').item.json.body.notificationParameters[0] }}",
-            "id_correspondente": "={{ $('Grupos WPP Procurar Grupo').item.json.id }}"
+            "id_correspondente": "={{ $('Groups WPP Select Group by ID').item.json.id }}"
           },
           "matchingColumns": [
             "celular",
@@ -983,87 +983,87 @@
   ],
   "pinData": {},
   "connections": {
-    "Adicionada, convidada ou saiu do grupo?": {
+    "Added, invited or left a group?": {
       "main": [
         [
           {
-            "node": "Grupos WPP Procurar Grupo (2)",
+            "node": "Groups WPP Select Group by ID (2)",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Foi adicionada ou convidada?": {
+    "Added or invited?": {
       "main": [
         [
           {
-            "node": "Nums WPP Insert (data_in)",
+            "node": "Nums WPP Insert (date_in)",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Nums WPP Procurar (data_in)",
+            "node": "Nums WPP Select (date_in)",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Encontrou a pessoa?": {
+    "Person found?": {
       "main": [
         [
           {
-            "node": "Nums WPP Update (data_out)",
+            "node": "Nums WPP Update (date_out)",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Nums WPP Insert (data_in e data_out)",
+            "node": "Nums WPP Insert (date_in and date_out)",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Nums WPP Procurar (data_in)": {
+    "Nums WPP Select (date_in)": {
       "main": [
         [
           {
-            "node": "Encontrou a pessoa?",
+            "node": "Person found?",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Virou Admin?": {
+    "Person promoted to Admin?": {
       "main": [
         [
           {
-            "node": "Nums WPP Update (eh_admin = True)",
+            "node": "Nums WPP Update (is_admin = True)",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Nums WPP Update (eh_admin = False)",
+            "node": "Nums WPP Update (is_admin = False)",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Foi atualização de status de Admin?": {
+    "Admin promotion or demotion?": {
       "main": [
         [
           {
-            "node": "Grupos WPP Procurar Grupo",
+            "node": "Groups WPP Select Group by ID",
             "type": "main",
             "index": 0
           }
@@ -1074,56 +1074,56 @@
       "main": [
         [
           {
-            "node": "Adicionada, convidada ou saiu do grupo?",
+            "node": "Added, invited or left a group?",
             "type": "main",
             "index": 0
           },
           {
-            "node": "Foi atualização de status de Admin?",
+            "node": "Admin promotion or demotion?",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Grupos WPP Procurar Grupo (2)": {
+    "Groups WPP Select Group by ID (2)": {
       "main": [
         [
           {
-            "node": "Foi adicionada ou convidada?",
+            "node": "Added or invited?",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Grupos WPP Procurar Grupo": {
+    "Groups WPP Select Group by ID": {
       "main": [
         [
           {
-            "node": "Nums WPP Procurar Registros da Pessoa",
+            "node": "Nums WPP Select rows by phone number",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Nums WPP Procurar Registros da Pessoa": {
+    "Nums WPP Select rows by phone number": {
       "main": [
         [
           {
-            "node": "Encontrou Registros da Pessoa?",
+            "node": "Found rows?",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Encontrou Registros da Pessoa?": {
+    "Found rows?": {
       "main": [
         [
           {
-            "node": "Virou Admin?",
+            "node": "Person promoted to Admin?",
             "type": "main",
             "index": 0
           }
